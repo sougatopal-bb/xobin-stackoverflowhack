@@ -1,0 +1,80 @@
+<style>
+    .starter-template{
+        text-align: center;
+    }
+    .ques-title{
+        text-align: left;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .answer-body{
+        padding-left: 10px
+    }
+    .answer-body p {
+    display: inline;
+    }
+    .tags-body{
+        margin-top:10px;
+    }
+    .tag-btn{
+        margin-right: 5px;
+        padding: 1px 5px;
+        font-size: 12px;
+        line-height: 1.5;
+        border-radius: 3px;
+        background-color: #337ab7;
+        color:#fff;
+    }
+    .like-btn{
+        margin-right: 5px;
+        padding: 1px 5px;
+        font-size: 12px;
+        line-height: 1.5;
+        border-radius: 3px;
+        color:#fff;
+        cursor: pointer;
+    }
+    .unvoted{
+        background-color:#9494d7;
+    }
+    .voted{
+        background-color:green;
+    }
+    .comment-body{
+        margin-left: 10px
+    }
+    .commentheader{
+        font-weight: bold;
+        font-size:10px;
+    }
+
+</style>
+<div class="container">
+    <div class="starter-template">
+        <h1>Stack Overflow Post</h1>
+    </div>
+    <div ng-show="vm.loading">
+    <wave-spinner></wave-spinner>
+    </div>
+    <div ng-hide="vm.loading" class="post-body">
+        <div class="row well" ng-repeat='post in vm.currentPost' >
+            <div class="col-md-12" >
+                <div class="commentheader" ng-if="post._PostTypeId==2" href="#{{post._ParentId}}">This is in response to Ques</div>
+                <div class="ques-title" ng-if="post._PostTypeId==1" id='{{post._Id}}'>{{post._Title}}</div>
+                <div class="answer-body"  ng-bind-html="vm.trustAsHtml(post._Body)"></div>
+                <div class="tags-body">
+                <label ng-repeat='tag in post.tagList' class="tag-label tag-btn">{{tag}}</label>
+                </div>
+                <div class="tags-body">
+                <label class="tag-label like-btn" ng-click="vm.voting(post)" ng-class="post.voteFlag? 'voted':'unvoted'">Like</label>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+    <div class="pagination-section">
+        <div class="btn btn-primary pull-left" ng-hide="vm.currentLength==0" ng-click="vm.back()">Back</div>
+        <div class="btn btn-primary pull-right" ng-click="vm.next()">Next</div>
+    </div>
+</div>
